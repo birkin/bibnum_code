@@ -1,29 +1,55 @@
-use log::*;
-use simple_logger::SimpleLogger;
+use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
+use chrono::Local;
 
-// -- main controller -----------------------------------------------
+macro_rules! custom_log {
+    ($($arg:tt)*) => ({
+        log::info!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
+    });
+}
+
+static LOGGER: SimpleLogger = SimpleLogger;
+
+struct SimpleLogger;
+
+impl log::Log for SimpleLogger {
+    fn enabled(&self, metadata: &Metadata) -> bool {
+        metadata.level() <= Level::Info
+    }
+
+    fn log(&self, record: &Record) {
+        if self.enabled(record.metadata()) {
+            println!(
+                "[{}] {} [{}-{}::{}] {}",
+                Local::now().format("%d/%b/%Y %H:%M:%S"),
+                record.level(),
+                record.file().unwrap_or("<unknown>"),
+                record.module_path().unwrap_or("<unknown>"),
+                record.line().unwrap_or(0),
+                record.args()
+            );
+        }
+    }
+
+    fn flush(&self) {}
+}
+
+fn init_logger() -> Result<(), SetLoggerError> {
+    log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info))
+}
 
 fn main() {
+    init_logger().unwrap();
 
-    // -- init logging
-    SimpleLogger::new()
-        .with_level(log::LevelFilter::Debug)
-        .init()
-        .unwrap();
-    debug!("logging ready");
+    custom_log!("This is a log from the main function.");
 
-    // -- set marc file path
-    let marc_xml_path: String = match std::env::var("MRC_EXP__MARCXML_FILE_PATH") {
-        Ok(val) => val,
-        Err(e) => panic!(
-            "\n\nCouldn't interpret MARC_XML_PATH; error, ``{:?}``; are envars loaded?\n\n",
-            e
-        ),
-    };
-    debug!("marc_xml_path, ``{:?}``", marc_xml_path);
+    first_function();
+    second_function();
+}
 
+fn first_function() {
+    custom_log!("This is a log from the first function.");
+}
 
-    println!("Hello, world!");
-
-    info!("end of main()");
+fn second_function() {
+    custom_log!("This is a log from the second function.");
 }
