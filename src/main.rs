@@ -1,4 +1,4 @@
-mod logger;
+mod logger; // enables the log_debug!() and log_info!() macros
 
 fn main() {
     logger::init_logger().unwrap();

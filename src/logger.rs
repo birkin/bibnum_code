@@ -1,3 +1,29 @@
+/// -----------------------------------------------------------------
+/// This file contains the implementation of a simple logger in Rust.
+/// It uses the `log` crate to provide logging macros and the `chrono` crate to timestamp logs.
+///
+/// The `log_info` and `log_debug` macros are defined to log information and debug messages respectively.
+/// These macros include the file name, module path, and line number in the log message.
+///
+/// The `SimpleLogger` struct is defined and implements the `Log` trait from the `log` crate.
+/// The `enabled` method checks if the log level is less than or equal to `Debug`.
+/// The `log` method prints the log message to the console if logging is enabled.
+/// The log message includes a timestamp, the log level, the file name, module path, line number, and the log message itself.
+///
+/// The `LOGGER` static variable is an instance of `SimpleLogger` that can be used throughout the application.
+/// 
+/// My goal was to enable logging that's as informative as the logging I typically use in python:
+    // lglvl: str = os.environ.get( 'LOGLEVEL', 'DEBUG' )
+    // lglvldct = {
+    //     'DEBUG': logging.DEBUG,
+    //     'INFO': logging.INFO }
+    // logging.basicConfig(
+    //     level=lglvldct[lglvl],  # assigns the level-object to the level-key loaded from the envar
+    //     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+    //     datefmt='%d/%b/%Y %H:%M:%S' )
+    // log = logging.getLogger( __name__ )
+    // log.debug( 'logging working' )
+/// -----------------------------------------------------------------
 use chrono::Local;
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::env;
