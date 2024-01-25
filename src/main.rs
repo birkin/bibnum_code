@@ -1,5 +1,6 @@
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use chrono::Local;
+use std::env;
 
 macro_rules! log_info {
     ($($arg:tt)*) => {
@@ -41,8 +42,20 @@ impl log::Log for SimpleLogger {
     fn flush(&self) {}
 }
 
+// fn init_logger() -> Result<(), SetLoggerError> {
+//     log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug)) // Adjust as needed
+// }
+
 fn init_logger() -> Result<(), SetLoggerError> {
-    log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug)) // Adjust as needed
+    let log_level = env::var("LOG_LEVEL").unwrap_or_else(|_| "debug".to_string()); // Default to debug if not set
+
+    let level_filter = match log_level.to_lowercase().as_str() {
+        "info" => LevelFilter::Info,
+        // You can add more cases for other log levels if needed
+        _ => LevelFilter::Debug,
+    };
+
+    log::set_logger(&LOGGER).map(|()| log::set_max_level(level_filter))
 }
 
 fn main() {
