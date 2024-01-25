@@ -11,18 +11,18 @@
 /// The log message includes a timestamp, the log level, the file name, module path, line number, and the log message itself.
 ///
 /// The `LOGGER` static variable is an instance of `SimpleLogger` that can be used throughout the application.
-/// 
+///
 /// My goal was to enable logging that's as informative as the logging I typically use in python:
-    // lglvl: str = os.environ.get( 'LOGLEVEL', 'DEBUG' )
-    // lglvldct = {
-    //     'DEBUG': logging.DEBUG,
-    //     'INFO': logging.INFO }
-    // logging.basicConfig(
-    //     level=lglvldct[lglvl],  # assigns the level-object to the level-key loaded from the envar
-    //     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
-    //     datefmt='%d/%b/%Y %H:%M:%S' )
-    // log = logging.getLogger( __name__ )
-    // log.debug( 'logging working' )
+///     lglvl: str = os.environ.get( 'LOGLEVEL', 'DEBUG' )
+///     lglvldct = {
+///         'DEBUG': logging.DEBUG,
+///         'INFO': logging.INFO }
+///     logging.basicConfig(
+///         level=lglvldct[lglvl],  # assigns the level-object to the level-key loaded from the envar
+///         format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+///         datefmt='%d/%b/%Y %H:%M:%S' )
+///     log = logging.getLogger( __name__ )
+///     log.debug( 'logging working' )
 /// -----------------------------------------------------------------
 use chrono::Local;
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
