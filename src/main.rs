@@ -40,16 +40,16 @@ fn init_logger() -> Result<(), SetLoggerError> {
 fn main() {
     init_logger().unwrap();
 
-    custom_log!("This is a log from the main function.");
+    custom_log!("log-entry from the main function.");
 
     first_function();
     second_function();
 }
 
 fn first_function() {
-    custom_log!("This is a log from the first function.");
+    custom_log!("log-entry from the first function.");
 }
 
 fn second_function() {
-    custom_log!("This is a log from the second function.");
+    custom_log!("log-entry from the second function.");
 }
