@@ -1,5 +1,5 @@
-use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use chrono::Local;
+use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::env;
 
 macro_rules! log_info {
@@ -41,10 +41,6 @@ impl log::Log for SimpleLogger {
 
     fn flush(&self) {}
 }
-
-// fn init_logger() -> Result<(), SetLoggerError> {
-//     log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug)) // Adjust as needed
-// }
 
 fn init_logger() -> Result<(), SetLoggerError> {
     let log_level = env::var("LOG_LEVEL").unwrap_or_else(|_| "debug".to_string()); // Default to debug if not set
