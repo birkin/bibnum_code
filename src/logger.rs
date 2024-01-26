@@ -28,17 +28,32 @@ use chrono::Local;
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::env;
 
+// #[macro_export]
+// macro_rules! log_info {
+//     ($($arg:tt)*) => {
+//         log::info!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
+//     };
+// }
+
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)*) => {
-        log::info!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
+        log::info!("{}", format_args!($($arg)*));
     };
 }
+
+
+// #[macro_export]
+// macro_rules! log_debug {
+//     ($($arg:tt)*) => {
+//         log::debug!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
+//     };
+// }
 
 #[macro_export]
 macro_rules! log_debug {
     ($($arg:tt)*) => {
-        log::debug!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
+        log::debug!("{}", format_args!($($arg)*));
     };
 }
 
@@ -51,14 +66,28 @@ impl log::Log for SimpleLogger {
         metadata.level() <= Level::Debug
     }
 
+    // fn log(&self, record: &Record) {
+    //     if self.enabled(record.metadata()) {
+    //         println!(
+    //             "[{}] {} [{}-{}::{}] {}",
+    //             Local::now().format("%d/%b/%Y %H:%M:%S"),
+    //             record.level(),
+    //             record.file().unwrap_or("<unknown>"),
+    //             record.module_path().unwrap_or("<unknown>"),
+    //             record.line().unwrap_or(0),
+    //             record.args()
+    //         );
+    //     }
+    // }
+
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
             println!(
-                "[{}] {} [{}-{}::{}] {}",
+                "[{}] {} [{}::{}] {}",
                 Local::now().format("%d/%b/%Y %H:%M:%S"),
                 record.level(),
                 record.file().unwrap_or("<unknown>"),
-                record.module_path().unwrap_or("<unknown>"),
+                // record.module_path().unwrap_or("<unknown>"),  // can't determine the fuction-name
                 record.line().unwrap_or(0),
                 record.args()
             );
