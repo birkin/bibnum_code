@@ -32,6 +32,23 @@ use std::env;
 
 pub static LOGGER: SimpleLogger = SimpleLogger;
 
+/*
+The two macros below allow me to use logging statements like:
+`log_debug!("some message");` and `log_info!("some message");`
+
+$: The dollar sign is used to denote the beginning of a macro variable or a repetition sequence.
+
+(...): Parentheses group the pattern that matches the macro input. In the case of your logging macros, it groups the entire variable argument list.
+
+$arg:tt: This part is defining a macro variable:
+
+$arg is the name of the variable that will hold the input passed to the macro.
+:tt specifies the fragment specifier. tt stands for "token tree," a flexible specifier that can capture a wide variety of syntactic constructs, including literals, identifiers, types, expressions, etc. It's used here to allow the macro to accept any Rust expression as input.
+*: This is a repetition operator, indicating that the pattern preceding it can repeat zero or more times. This allows the macro to accept a variable number of arguments.
+
+
+*/
+
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)*) => {
