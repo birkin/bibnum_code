@@ -26,11 +26,11 @@
 ///
 /// I haven't yet been able to figure out how to log the function name.
 /// -----------------------------------------------------------------
-
 use chrono::Local;
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::env;
 
+pub static LOGGER: SimpleLogger = SimpleLogger;
 
 #[macro_export]
 macro_rules! log_info {
@@ -39,15 +39,12 @@ macro_rules! log_info {
     };
 }
 
-
 #[macro_export]
 macro_rules! log_debug {
     ($($arg:tt)*) => {
         log::debug!("{}", format_args!($($arg)*));
     };
 }
-
-pub static LOGGER: SimpleLogger = SimpleLogger;
 
 pub struct SimpleLogger;
 
