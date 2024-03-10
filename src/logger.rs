@@ -23,17 +23,14 @@
 ///         datefmt='%d/%b/%Y %H:%M:%S' )
 ///     log = logging.getLogger( __name__ )
 ///     log.debug( 'logging working' )
+///
+/// I haven't yet been able to figure out how to log the function name.
 /// -----------------------------------------------------------------
+
 use chrono::Local;
 use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::env;
 
-// #[macro_export]
-// macro_rules! log_info {
-//     ($($arg:tt)*) => {
-//         log::info!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
-//     };
-// }
 
 #[macro_export]
 macro_rules! log_info {
@@ -42,13 +39,6 @@ macro_rules! log_info {
     };
 }
 
-
-// #[macro_export]
-// macro_rules! log_debug {
-//     ($($arg:tt)*) => {
-//         log::debug!(concat!(file!(), "-", module_path!(), "::", line!(), " {}"), format_args!($($arg)*));
-//     };
-// }
 
 #[macro_export]
 macro_rules! log_debug {
@@ -65,20 +55,6 @@ impl log::Log for SimpleLogger {
     fn enabled(&self, metadata: &Metadata) -> bool {
         metadata.level() <= Level::Debug
     }
-
-    // fn log(&self, record: &Record) {
-    //     if self.enabled(record.metadata()) {
-    //         println!(
-    //             "[{}] {} [{}-{}::{}] {}",
-    //             Local::now().format("%d/%b/%Y %H:%M:%S"),
-    //             record.level(),
-    //             record.file().unwrap_or("<unknown>"),
-    //             record.module_path().unwrap_or("<unknown>"),
-    //             record.line().unwrap_or(0),
-    //             record.args()
-    //         );
-    //     }
-    // }
 
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
