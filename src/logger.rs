@@ -71,6 +71,7 @@ impl log::Log for SimpleLogger {
     }
 
     fn log(&self, record: &Record) {
+        /* if the log-level is set to `INFO`, then the `log_debug!()` macro's message will not be printed. */
         if self.enabled(record.metadata()) {
             println!(
                 "[{}] {} [{}::{}] {}",
@@ -78,13 +79,13 @@ impl log::Log for SimpleLogger {
                 record.level(),
                 record.file().unwrap_or("<unknown>"),
                 // record.module_path().unwrap_or("<unknown>"),  // can't determine the fuction-name
-                record.line().unwrap_or(0),
+                record.line().unwrap_or(0), // the default value of 0 implies that the line-number is not available
                 record.args()
             );
         }
     }
 
-    fn flush(&self) {}
+    fn flush(&self) {} // my output to the console doesn't require this, but it's required by the `Log` trait
 }
 
 pub fn init_logger() -> Result<(), SetLoggerError> {
@@ -94,5 +95,9 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
         _ => LevelFilter::Debug,
     };
 
+    /*
+       In the line below, the part between the vertical pipes is the cloaure `arcument`.
+       The part `log::set_max_level(level_filter)` is the closure `body`.
+    */
     log::set_logger(&LOGGER).map(|()| log::set_max_level(level_filter))
 }
